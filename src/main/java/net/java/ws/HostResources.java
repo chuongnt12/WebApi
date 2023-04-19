@@ -10,25 +10,30 @@ import java.util.List;
 
 @Path("/hosts")
 public class HostResources {
-	private HostDAO dao = HostDAO.getInstance();
-	private String googleUrl = "www.google.com";
-	private String amazonUrl = "www.amazon.com";
-	private String facebookUrl = "www.facebook.com";
 	
-	public void Init(){
+	private HostDAO dao = HostDAO.getInstance();
+	private String Url ;
+	private InetAddress ip;
+	
+	public void Init() {
 		try {
+		Url = "www.google.com";
 		// Fetch Ip address by getByName
-		InetAddress ip = InetAddress.getByName(googleUrl);
+		ip = InetAddress.getByName(Url);
 		// add to host list
-		dao.add(new Host(googleUrl,ip.getHostAddress()));
+		dao.add(new Host(Url,ip.getHostAddress()));
+		
+		Url = "www.amazon.com";
 		// Fetch Ip address by getByName
-		ip = InetAddress.getByName(amazonUrl);
+		ip = InetAddress.getByName(Url);
 		// add to host list
-		dao.add(new Host(amazonUrl,ip.getHostAddress()));
+		dao.add(new Host(Url,ip.getHostAddress()));
+		
+		Url = "www.facebook.com";
 		// Fetch Ip address by getByName
-		ip = InetAddress.getByName(facebookUrl);
+		ip = InetAddress.getByName(Url);
 		// add to host list
-		dao.add(new Host(facebookUrl,ip.getHostAddress()));
+		dao.add(new Host(Url,ip.getHostAddress()));
 		}
 		catch(UnknownHostException u) {
 			
@@ -38,8 +43,12 @@ public class HostResources {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Host> list(){
-		Init();
-		return dao.listAll();
+		if (dao.checkDataIsEmpty() == false) {
+			return dao.listAll();
+		}else {
+			Init();
+			return dao.listAll();
+		}
 	}
 	
 }

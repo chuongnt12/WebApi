@@ -4,10 +4,9 @@ import java.util.*;
 
 public class HostDAO {
 	private static HostDAO instance;
-	private static List<Host> data = new ArrayList<>();
+	private List<Host> data = new ArrayList<>();
 	
-	private HostDAO() {
-		
+	public HostDAO() {
 	}
 	
 	public static HostDAO getInstance() {
@@ -22,5 +21,13 @@ public class HostDAO {
 	
 	public void add(Host host) {
 		data.add(host);
+	}
+	
+	public boolean checkDataIsEmpty() {
+		if (data.isEmpty() == true) {
+			return true;
+		}else {
+			return false;
+		}	
 	}
 }
